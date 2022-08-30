@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title>Home</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <span class="nav-logo">Youtube</span>
+        <ul class="nav-left">
+          <a href="/" class="nav-left__home"><li>Home</li></a>
+          <a href="/music"><li>Music</li></a>
+          <a href="/game"><li>Game</li></a>
+          <a href="/movie"><li>Movie</li></a>
+
+        </ul>
+        <ul class="nav-right">
+          <a href="/my-content"><li>My Contents</li></a>
+          <a href="/log-in"><li>Log in</li></a>
+          <a href="/join"><li>Join</li></a>
+        </ul>
+      </nav>
+    </header>
+    <div class="banner">
+      <form>
+        <h2>Popular videos on YouTube</h2>
+        <h3>
+          Thousands of free stock video clips & footage shared by our talented
+          community.
+        </h3>
+        <div class="banner-search">
+          <input placeholder="Search videos, musics and games" />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <span>Popular Videos: movie, music, game, tv shows...</span>
+      </form>
+      <div class="banner-gradient"></div>
+    </div>
+    <main>
+      <div class="video-grid"></div>
+    </main>
+    <div class="change-page">
+      <button class="prev-btn">Prev</button>
+      <div class="change-page__buttons"></div>
+      <button class="next-btn">Next</button>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/6478f529f2.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+import { getPopular, getPopularViews } from "./api.js";
+
+// jquery html 파일에 추가
+var script = document.createElement("script");
+script.src = "https://code.jquery.com/jquery-3.4.1.min.js";
+script.type = "text/javascript";
+document.getElementsByTagName("head")[0].appendChild(script);
+// data를 슬라이스 할 인덱스 값
+let start = 0;
+let end = 20;
+// 받아올 video 데이터와 조회수 데이터를 넣을 값
+let data = [];
+let views = [];
+// 최대 페이지 수
+let max = 0;
+// 현재 페이지
+let current = 1;
+
+// 현재 url
+const url = window.location.pathname;
+console.log(url);
+// api.js 파일로부터 데이터를 가져오는 함수 / 버튼 생성 (createBtn) / 영상들 보여주기 (addElement) / if~는 url에 "index"가 들어가있다면 빨간줄 긋게 하기
+async function getData() {
+  data = await getPopular();
+  views = await getPopularViews();
+  max = Math.ceil(data.length / 20);
+  createBtn(max);
+  addElement();
+  if (url=="/") {
+    $(".nav-left__home").css("box-shadow", "0 -3px 0px  red inset");
+  }
+}
+
+// 데이터를 html로 뿌려주는 함수
+function addElement() {
+  // 스크롤을 맨 위로 올려보내는 코드
+  window.scrollTo(0, 0);
+  // .video-grid안을 비워버리는 코드
+  $(".video-grid").empty();
+  // 초기에 받아온 data에서 start부터 end까지 잘라와 newData 변수에 할당
+  const newData = data.slice(start, end);
+  // 화면에 동영상을 .video-grid 안에 append
+  newData.map((item, idx) => {
+    const {
+      id,
+      snippet: {
+        channelTitle,
+        title,
+        publishedAt,
+        thumbnails: { medium },
+      },
+    } = item;
+    // viewCount를 추출하기
+    const {
+      statistics: { viewCount },
+    } = views[idx];
+
+    $(".video-grid").append(`
+    <div class="video-grid__item">
+      <div class="video-grid__item-img" style="background-image:url('${
+        medium.url
+      }')"></div>
+      <div class="video-grid__item-info">
+        <h2>${title}</h2>
+        <div>
+          <span>${channelTitle}</span>
+          <span>${viewString(viewCount)}</span>
+        </div>
+      </div>
+    </div>
+    `);
+  });
+}
+// 73번째부터 97번째 줄까지는 prev / next 버튼 클릭시 이전 페이지와 다음페이지를 보여주게 하는 코드이다.
+const prevBtn = document.querySelector(".prev-btn");
+const nextBtn = document.querySelector(".next-btn");
+
+prevBtn.addEventListener("click", () => {
+  if (start != 0) {
+    currentBtn();
+    start -= 20;
+    end -= 20;
+    current--;
+    currentBtn();
+    addElement();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (end != max * 20) {
+    currentBtn();
+    start += 20;
+    end += 20;
+    current++;
+    currentBtn();
+    addElement();
+  }
+});
+
+// 페이지를 열었을 때 데이터를 가져오도록 하는 함수를 실행
+getData();
+
+// 조회수를 잘라내는 함수
+function viewString(num) {
+  if (num < 1000) return `조회수 ${num}회`;
+  else if (num >= 1000 && num < 10000)
+    return `조회수 ${Math.floor(num / 1000)}.${Math.floor(
+      (num % 1000) / 100
+    )}천회`;
+  else if (num > 10000 && num < 100000)
+    return `조회수 ${Math.floor(num / 10000)}.${Math.floor(
+      (num % 10000) / 1000
+    )}만회`;
+  else return `조회수 ${Math.floor(num / 10000)}만회`;
+}
+
+// 페이지를 이동할 수 있는 숫자 버튼을 생성하는 함수 / 숫자 클릭시 addElement()를 실행
+function createBtn(num) {
+  let buttonText = Array(num)
+    .fill(1)
+    .map((item, index) => item + index);
+  buttonText.map((item) => {
+    $(".change-page__buttons").append(
+      `<button value="${item}" class="change-page__buttons-btn${item}">${item}</button>`
+    );
+    $(`.change-page__buttons-btn${item}`).click((event) => {
+      let number = event.handleObj.guid;
+      start = 20 * (number - 1);
+      end = 20 * number;
+      currentBtn();
+      current = number;
+      currentBtn();
+      addElement();
+    });
+  });
+  currentBtn();
+}
+// 현재 위치한 동영상 페이지 번호를 검은색으로 바꿔주는 함수
+function currentBtn() {
+  const btn = document.querySelector(`.change-page__buttons-btn${current}`);
+  console.log(btn);
+  btn.classList.toggle("focus");
+}
