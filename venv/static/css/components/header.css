@@ -1,3 +1,4 @@
+/* 화면 맨위 상단의 로고,home,music 등 navigator 역할을 하는 header */
 header nav {
   height: 60px;
   display: grid;

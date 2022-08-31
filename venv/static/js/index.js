@@ -1,6 +1,6 @@
 import { getPopular, getPopularViews } from "./api.js";
 import { addElement } from "./sendHtml.js";
-
+import {currentPage} from "./currentPage.js";
 // data를 슬라이스 할 인덱스 값
 let start = 0;
 let end = 20;
@@ -25,9 +25,8 @@ async function getData() {
   max = Math.ceil(data.length / 20);
   createBtn(max);
   addElement(data, views, start, end);
-  if (url=="/") {
-    $(".nav-left__home").css("box-shadow", "0 -3px 0px  red inset");
-  }
+  // currentPage(url)은 해당 페이지의 패스가 /라면 home에 빨간 표시, /music인 경우는 music에 빨간 표시를 하는 함수이다.
+  currentPage(url);
 }
 
 // 33번째부터 57번째 줄까지는 prev / next 버튼 클릭시 이전 페이지와 다음페이지를 보여주게 하는 코드이다.
