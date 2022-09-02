@@ -8,6 +8,7 @@ export const addElement = (data, views, start, end) => {
   const newData = data.slice(start, end);
   // 화면에 동영상을 .video-grid 안에 append
   newData.map((item, idx) => {
+    // video로부터 id ,channelTitle, title, publishedAt, medium( thumbnail.medium )을 추출
     const {
       id,
       snippet: {

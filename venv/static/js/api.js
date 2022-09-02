@@ -27,3 +27,4 @@ export async function getVideo(id) {
 /*
   videoCategoryId=10&
 */
+// sports = 17
