@@ -1,6 +1,11 @@
-import { getPopular, getPopularViews } from "./api.js";
+import {
+  getPopular,
+  getPopularViews,
+  getSports,
+  getSportsViews,
+} from "./api.js";
 import { addElement } from "./sendHtml.js";
-import {currentPage} from "./currentPage.js";
+import { currentPage } from "./currentPage.js";
 // data를 슬라이스 할 인덱스 값
 let start = 0;
 let end = 20;
@@ -20,8 +25,14 @@ const url = window.location.pathname;
 
 // api.js 파일로부터 데이터를 가져오는 함수 / 버튼 생성 (createBtn) / 영상들 보여주기 (addElement) / if~는 url에 "index"가 들어가있다면 빨간줄 긋게 하기
 async function getData() {
-  data = await getPopular();
-  views = await getPopularViews();
+  if (url == "/") {
+    data = await getPopular();
+    views = await getPopularViews();
+  } else if (url == "/sports") {
+    data = await getSports();
+    views = await getSportsViews();
+  }
+
   max = Math.ceil(data.length / 20);
   createBtn(max);
   addElement(data, views, start, end);

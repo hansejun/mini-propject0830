@@ -17,6 +17,22 @@ export async function getPopularViews() {
   return json.items;
 }
 
+export async function getSports() {
+  let response = await fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=100&videoCategoryId=17&regionCode=KR&key=${API_KEY}`
+  );
+  let json = await response.json();
+  return json.items;
+}
+
+export async function getSportsViews() {
+  let response = await fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=statistics&chart=mostPopular&maxResults=100&videoCategoryId=17&regionCode=KR&key=${API_KEY}`
+  );
+  let json = await response.json();
+  return json.items;
+}
+
 export async function getVideo(id) {
   let response = await fetch(
     `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${API_KEY}`
@@ -24,6 +40,7 @@ export async function getVideo(id) {
   let json = await response.json();
   return json.items;
 }
+
 /*
   videoCategoryId=10&
 */

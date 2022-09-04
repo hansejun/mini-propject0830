@@ -5,6 +5,7 @@ export const addElement = (data, views, start, end) => {
   $(".video-grid").empty();
   // 초기에 받아온 data에서 start부터 end까지 잘라와 newData 변수에 할당
   console.log(data);
+  console.log(views);
   const newData = data.slice(start, end);
   // 화면에 동영상을 .video-grid 안에 append
   newData.map((item, idx) => {
