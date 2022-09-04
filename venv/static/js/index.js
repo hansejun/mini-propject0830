@@ -9,13 +9,13 @@ let end = 20;
 let data = [];
 let views = [];
 
-// 최대 페이지 수
+// 최대 페이지 수 : max는 data의 갯수 / 20의 올림이다. ex) data 갯수 = 50;  50/20 = 2.5 ; 2.5의 올림은 3.
 let max = 0;
 
-// 현재 페이지
+// 현재 페이지 : 하단의 페이지 이동 버튼을 클릭할 때마다 값이 변동한다.
 let current = 1;
 
-// 현재 url
+// 현재 url : "http://localhost:6070/sports"에 있을 경우 url의 값은 "/sports"이다.
 const url = window.location.pathname;
 
 // api.js 파일로부터 데이터를 가져오는 함수 / 버튼 생성 (createBtn) / 영상들 보여주기 (addElement) / if~는 url에 "index"가 들어가있다면 빨간줄 긋게 하기
@@ -56,10 +56,10 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-// 페이지를 열었을 때 데이터를 가져오도록 하는 함수를 실행
+// 처음 페이지를 열었을 때 데이터를 가져오도록 하는 함수를 실행
 getData();
 
-// 페이지를 이동할 수 있는 숫자 버튼을 생성하는 함수 / 숫자 클릭시 addElement()를 실행
+// 페이지를 이동할 수 있는 숫자 버튼을 생성하는 함수 / 숫자 클릭시 addElement()를 실행 / addElement()는 화면상에 동영상을 뿌려주는 함수이다.
 function createBtn(num) {
   let buttonText = Array(num)
     .fill(1)
