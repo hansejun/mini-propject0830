@@ -85,5 +85,4 @@ function createBtn(num) {
 function currentBtn() {
   const btn = document.querySelector(`.change-page__buttons-btn${current}`);
   btn.classList.toggle("focus");
-  console.log(btn);
 }

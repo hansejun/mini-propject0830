@@ -7,7 +7,9 @@ const category = {
 // path에 따라 카테고리에 맞는 인기동영상을 가져오는 api
 export async function getPopular(path) {
   let response = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=100&${category[path]}regionCode=KR&key=${API_KEY}`
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=100&${
+      category[path] || ""
+    }regionCode=KR&key=${API_KEY}`
   );
   let json = await response.json();
   return json.items;
@@ -15,7 +17,9 @@ export async function getPopular(path) {
 // path에 따라 카테고리에 맞는 인기동영상의 조회수를 가져오는 api
 export async function getPopularViews(path) {
   let response = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=statistics&chart=mostPopular&maxResults=100&${category[path]}regionCode=KR&key=${API_KEY}`
+    `https://www.googleapis.com/youtube/v3/videos?part=statistics&chart=mostPopular&maxResults=100&${
+      category[path] || ""
+    }regionCode=KR&key=${API_KEY}`
   );
   let json = await response.json();
   return json.items;
