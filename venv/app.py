@@ -14,8 +14,8 @@ def game():
    return render_template("index.html",pageName="home")
 
 @app.route('/sports')
-def movie():
-   return render_template("sports.html")
+def sports():
+   return render_template("index.html")
 
 if __name__ == '__main__':
    app.run('0.0.0.0',port=6070,debug=True)
