@@ -7,11 +7,11 @@ def home():
 
 @app.route('/music')
 def music():
-   return render_template("index.html",pageName="home")
+   return render_template("index.html")
 
 @app.route('/game')
 def game():
-   return render_template("index.html",pageName="home")
+   return render_template("index.html")
 
 @app.route('/sports')
 def sports():
