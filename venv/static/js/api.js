@@ -3,6 +3,8 @@ const API_KEY = "AIzaSyCWWcxidOOzDR8SbEofjAUVdp2u51YtXj0";
 const category = {
   "/": "",
   "/sports": "videoCategoryId=17&",
+  "/game": "videoCategoryId=20&",
+  "/music": "videoCategoryId=10&",
 };
 
 // path에 따라 카테고리에 맞는 인기동영상을 가져오는 api
