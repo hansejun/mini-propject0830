@@ -8,4 +8,5 @@ export function isLogin() {
     join.classList.add("none");
     logOut.classList.remove("none");
   }
+  logOut.addEventListener("click", () => localStorage.removeItem("user"));
 }

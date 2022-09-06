@@ -25,10 +25,48 @@
           <a href="/my-content"><li>My Contents</li></a>
           <a href="/log-in" class="log-in"><li>Log in</li></a>
           <a href="/join" class="join"><li>Join</li></a>
-          <a href="/log-out" class="log-out none"><li>Log out</li></a>
+          <a href="/" class="log-out none"><li>Log out</li></a>
         </ul>
       </nav>
     </header>
-    <main></main>
+    <div class="banner form-banner">
+      <form>
+        <h2>Login Page</h2>
+      </form>
+      <div class="banner-gradient"></div>
+    </div>
+    <main>
+      <div class="form-container">
+        <form class="form-container__form" method="post">
+          <label for="id" value="id">ID</label>
+          <div>
+            <input
+              placeholder="ID"
+              type="text"
+              id="id"
+              required
+              name="id"
+            /><span class="valid-id"></span>
+          </div>
+
+          <label for="password1" value="password1">Password</label>
+          <div>
+            <input
+              placeholder="Password"
+              type="password"
+              id="password1"
+              name="password"
+              required
+            /><span class="valid-password"></span>
+          </div>
+
+          <button type="submit" id="createBtn">Log In</button>
+        </form>
+      </div>
+    </main>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/logIn.js') }}"
+    ></script>
   </body>
 </html>
