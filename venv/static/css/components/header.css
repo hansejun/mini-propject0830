@@ -38,6 +38,10 @@ header nav .nav-right li {
   margin-left: 1vw;
 }
 
+.none {
+  display: none;
+}
+
 @media (max-width: 830px) {
   header nav {
     grid-template-columns: 1fr 2fr;

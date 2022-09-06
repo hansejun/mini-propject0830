@@ -24,9 +24,11 @@ export const addElement = (data, views, start, end) => {
 
     $(".video-grid").append(`
      <div class="video-grid__item">
+      <a  class="video-nav" href="">
        <div class="video-grid__item-img" style="background-image:url('${
          medium.url
        }')"></div>
+       </a>
        <div class="video-grid__item-info">
          <h2>${title}</h2>
          <div>

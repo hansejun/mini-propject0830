@@ -74,6 +74,12 @@
   font-size: 20px;
 }
 
+.form-banner {
+  height: 30vh;
+}
+.form-banner form h2 {
+  font-size: 50px;
+}
 @media (max-width: 830px) {
   .banner-search {
     width: 600px;

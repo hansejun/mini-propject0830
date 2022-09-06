@@ -1,6 +1,7 @@
 import { getPopular, getPopularViews } from "./api.js";
-import { addElement } from "./sendHtml.js";
-import { currentPage } from "./currentPage.js";
+import { addElement } from "./util/sendHtml.js";
+import { currentPage } from "./util/currentPage.js";
+import { isLogin } from "./util/isLogIn.js";
 // data를 슬라이스 할 인덱스 값
 let start = 0;
 let end = 20;
@@ -56,8 +57,10 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
+// isLogin();
 // 처음 페이지를 열었을 때 데이터를 가져오도록 하는 함수를 실행
 getData();
+// localStorage.setItem("user", "tpwnszja2");
 
 // 페이지를 이동할 수 있는 숫자 버튼을 생성하는 함수 / 숫자 클릭시 addElement()를 실행 / addElement()는 화면상에 동영상을 뿌려주는 함수이다.
 function createBtn(num) {
