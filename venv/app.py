@@ -26,18 +26,22 @@ def sports():
 def join():
    if request.method == 'POST':
     try:
-      result = request.form
+      id = request.form['formData[id]']
+      password = request.form['formData[password]']
+      user = db.users.find_one({"id":id})
+      print(id,password,user)
+      if user is not None:
+        return redirect(url_for('join'),code=400)
       data = {
-        'id' : result['id'],
-        'password' : result['password'],
-        'email' : result['email'],
+        'id' : id,
+        'password' : password,
         'videos' : []
       }
       db.users.insert_one(data)
-      return render_template("log-in.html",code=200)
+      return jsonify({"msg":"good"})
     except ValueError:
       print('회원가입 실패',ValueError)
-      return redirect("/join", code=406)
+      return redirect(url_for('join'),code=400)
    return render_template("join.html")
 
 
@@ -45,12 +49,20 @@ def join():
 def login():
   if request.method == 'POST':
     try:
-      result = request.form
-      print(result)
-      return render_template("index.html",code=200)
+      id = request.form['formData[id]']
+      password = request.form['formData[password]']
+      user = db.users.find_one({"id":id})
+      if user == None:
+        print(user)
+        return redirect(url_for("login"),code=400)
+      if str(user['password']) != str(password):
+        print(user['password'],password)
+        return redirect(url_for("login"),code=400)
+
+      return jsonify({"msg":"good"})
     except ValueError:
       print('로그인 실패',ValueError)
-      return redirect("/log-in", code=406)
+      return redirect(url_for("login"))
   return render_template("log-in.html")
 
 
@@ -59,3 +71,4 @@ if __name__ == '__main__':
    app.run('0.0.0.0',port=6070,debug=True)
 
 print("hello")
+
