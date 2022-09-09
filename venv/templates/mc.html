@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>My Content</title>
+    <script>
+      // rows는 데이터를 받아올 배열
+      let rows = [];
+      // start는 보여줄 동영상의 시작하는 index  ex) 0부터 20번째까지의 영상을 보여준다.
+      let start = 0;
+      // end는 보여줄 동영상의 마지막 index
+      let end = 20;
+      // max는 페이지 수
+      let max = 0;
+      // prev는 prev 버튼을 담아줄 변수
+      let prev;
+      // next는 next 버튼을 담아줄 변수
+      let next;
+
+      // prevClick은 start의 값이 0이 아니라면(첫 페이지가 아니라면) 이전 페이지의 동영상을 보여주는 함수
+      const prevClick = () => {
+        if (start !== 0) {
+          start -= 20;
+          end -= 20;
+          show_mycontent();
+        }
+      };
+      // nextClick은 end의 값이 20*max가 아니라면(마지막 페이지가 아니라면) 다음 페이지의 동영상을 보여주는 함수
+      const nextClick = () => {
+        if (end != 20 * max) {
+          start += 20;
+          end += 20;
+          show_mycontent();
+        }
+      };
+      // 동영상을 rows 배열에서 start 인덱스부터 end 인덱스까지의 동영상을 화면에 보여주는 함수
+      function show_mycontent() {
+        // 동영상을 넣기 전 화면을 비워주는 empty() 메소드
+        $(".video-grid").empty();
+        for (let i = start; i < end; i++) {
+          // 만약 동영상의 갯수가 50개인데 end의 값이 60이라면 51부터 60까지 반복문 적용이 불가
+          // 그렇기 때문에 i의 값이 row의 마지막 인덱스 값이라면 반복문을 실행시키지 않습니당
+          if (i <= rows.length - 1) {
+            // const obj = {num:1, title:"hello", viewCount:2};  이러한 객체가 있을 때
+            // const num = obj[num] / const title = obj[title] / const viewCount = obj[viewCount]; 이런식으로 변수에 할당이 가능하지만
+            // 선언할 변수의 이름과 가져올 객체의 key값이 같다면 아래와 같이 변수에 값을 할당할 수 있습니당
+            // const {num,title,viewCount} = obj;  // console.log(num,title,viewCount) => 1 , "hello" , 2
+            let { num, title, channelTitle, viewCount, image, url } = rows[i];
+
+            let temp_html = `<div class="video-grid__item">
+              <figure class="video-grid__item-img">
+                  <button onClick="delete_mycontent(
+                  '${num}')" class="btn btn-warning">찜
+                  </button>
+                  <a href="${url}">
+                    <img id="imageUrl" src="${image}" alt="Image" style="width: 100%; height: 180px;">
+                  </a>
+              </figure>
+              <div class="video-grid__item-info">
+                <h2>${title}</h2>
+                <div>
+                  <span id="channelTitle">${channelTitle}</span>
+                  <span id="viewCount">${viewCount}</span>
+                </div>
+              </div>
+            </div>`;
+
+            $(".video-grid").append(temp_html);
+          }
+        }
+      }
+
+      function getData() {
+        $.ajax({
+          type: "GET",
+          url: "/mycontent",
+          data: {},
+          success: function (response) {
+            // 미리 만들어둔 변수 rows에 성공적으로 받아온 response["myconent"]값을 넣습니다.
+            rows = response["mycontent"];
+            // 받아온 rows(동영상 정보들)에 보여줄 20개를 나누어 소숫점이 나온다면 올림합니다. ex) 50 / 20 = 2.5 -> 2.5를 올림하여 3
+            max = Math.ceil(rows.length / 20);
+            // prev에 ".prev-btn"의 class를 가진 element를 넣습니다.
+            prev = document.querySelector(".prev-btn");
+            // next에 ".next-btn"의 class를 가진 element를 넣습니다.
+            next = document.querySelector(".next-btn");
+            // response를 성공적으로 받아왔다면 show_mycontent를 통해 화면에 rows[start] ~ rows[end]까지의 동영상을 보여줍니다.
+            show_mycontent();
+            // 각 버튼들에 클릭시 이벤트 등록을 합니다.  prev버튼을 클릭하면 prevClick() 함수가 실행됩니다. next버튼을 클릭하면 nextClick() 함수가 실행됩니다.
+            prev.addEventListener("click", prevClick);
+            next.addEventListener("click", nextClick);
+          },
+        });
+      }
+
+      function delete_mycontent(num) {
+        // 미리 만들어둔 이름을 넣어주고 app.py에 만든 num값을 불러옴
+        $.ajax({
+          type: "POST",
+          url: "/mycontent/delete",
+          data: { num_give: num },
+          success: function (response) {
+            console.log(response);
+            alert(response["msg"]);
+            window.location.reload();
+          },
+        });
+      }
+      // 화면이 랜더링 됨과 동시에 데이터를 불러오는 getData() 함수를 실행합니다.
+      getData();
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="https://www.youtube.com/" class="nav-logo"
+          ><img
+            style="height: 60px; width: 100px"
+            src="https://w.namu.la/s/9a2bd12a2c488026b0c552bd6527248ba60e70bf6e6d07e9c3a7f500fba5a9f0f74cb75a8fcd42babc39fa9abeec697c6dd86cd7c766515834b94b10746f95c829f30ea60ca6306302b1d4c4938364e524a181702fff135aaa154ee7adfbd9ed"
+            alt="유튜브 로고"
+        /></a>
+        <ul class="nav-left">
+          <a href="/" class="nav-left__home"><li>Home</li></a>
+          <a href="/music" class="nav-left__music"><li>Music</li></a>
+          <a href="/game" class="nav-left__game"><li>Game</li></a>
+          <a href="/sports" class="nav-left__movie"><li>Sports</li></a>
+        </ul>
+        <ul class="nav-right">
+          <a href="/my-content"><li>My Contents</li></a>
+          <a href="/log-in"><li>Log in</li></a>
+          <a href="/join"><li>Join</li></a>
+        </ul>
+      </nav>
+    </header>
+    <div class="banner">
+      <form action="https://www.youtube.com/results" method="GET">
+        <h2>Popular videos on YouTube</h2>
+        <h3>
+          Thousands of free stock video clips & footage shared by our talented
+          community.
+        </h3>
+        <div class="banner-search">
+          <input
+            name="search_query"
+            type="text"
+            placeholder="Search videos, musics and games"
+          />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <span>Popular Videos: movie, music, game, tv shows...</span>
+      </form>
+      <div class="banner-gradient"></div>
+    </div>
+    <main>
+      <div id="mycontent-box" class="video-grid"></div>
+    </main>
+    <div class="change-page">
+      <button class="prev-btn">Prev</button>
+      <div class="change-page__buttons"></div>
+      <button class="next-btn">Next</button>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/6478f529f2.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/mycontent_index.js') }}"
+    ></script>
+  </body>
+</html>

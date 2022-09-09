@@ -28,6 +28,7 @@ export const addElement = (data, views, start, end) => {
        <div class="video-grid__item-img" style="background-image:url('${
          medium.url
        }')"></div>
+       <button>⭐️</button>
        </a>
        <div class="video-grid__item-info">
          <h2>${title}</h2>
