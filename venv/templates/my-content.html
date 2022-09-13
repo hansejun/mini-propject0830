@@ -9,7 +9,7 @@
       href="{{ url_for('static', filename='css/style.css') }}"
     />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <title> </title>
+    <title>My Content</title>
   </head>
   <body>
     <header>
@@ -22,29 +22,16 @@
           <a href="/sports" class="nav-left__sports"><li>Sports</li></a>
         </ul>
         <ul class="nav-right">
-          <a href="/my-content" class="my-content"><li>My Contents</li></a>
+          <a href="/my-content"><li>My Contents</li></a>
           <a href="/log-in" class="log-in"><li>Log in</li></a>
           <a href="/join" class="join"><li>Join</li></a>
           <a href="/" class="log-out none"><li>Log out</li></a>
         </ul>
       </nav>
     </header>
-    <div class="banner">
-      <form>
-        <h2>Popular videos on YouTube</h2>
-        <h3>
-          Thousands of free stock video clips & footage shared by our talented
-          community.
-        </h3>
-        <div class="banner-search">
-          <input placeholder="Search videos, musics and games" />
-          <button><i class="fas fa-search"></i></button>
-        </div>
-        <span>Popular Videos: movie, music, game, tv shows...</span>
-      </form>
-      <div class="banner-gradient"></div>
-    </div>
+
     <main>
+      <h1 class="my-content-title">My Content</h1>
       <div class="video-grid"></div>
     </main>
     <div class="change-page">
@@ -58,7 +45,7 @@
     ></script>
     <script
       type="module"
-      src="{{ url_for('static', filename='js/index.js') }}"
+      src="{{ url_for('static', filename='js/myContent.js') }}"
     ></script>
   </body>
 </html>

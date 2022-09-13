@@ -1,0 +1,4 @@
+() page마다 header title 수정 
+() 버튼 아이콘으로 교체 
+() 찜버튼 클릭시 영상데이터와 로그인 아이디를 body에 담아 POST 요청 /api/fav (계정의 videos에 data 추가)
+() 

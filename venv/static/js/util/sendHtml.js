@@ -1,13 +1,9 @@
 export const addElement = (data, views, start, end) => {
-  // 스크롤을 맨 위로 올려보내는 코드
   window.scrollTo(0, 0);
-  // .video-grid안을 비워버리는 코드
   $(".video-grid").empty();
-  // 초기에 받아온 data에서 start부터 end까지 잘라와 newData 변수에 할당
   const newData = data.slice(start, end);
-  // 화면에 동영상을 .video-grid 안에 append
+
   newData.map((item, idx) => {
-    // video로부터 id ,channelTitle, title, publishedAt, medium( thumbnail.medium )을 추출
     const {
       id,
       snippet: {
@@ -17,19 +13,45 @@ export const addElement = (data, views, start, end) => {
         thumbnails: { medium },
       },
     } = item;
-    // viewCount를 추출하기
+
     const {
       statistics: { viewCount },
     } = views[idx];
 
+    const handleClick = (e) => {
+      const userId = localStorage.getItem("user");
+      if (!userId) alert("로그인이 필요합니다.");
+      if (userId) {
+        const formData = {
+          id,
+          title,
+          channelTitle,
+          viewCount,
+          url: medium.url,
+          userId,
+        };
+
+        $.ajax({
+          type: "POST",
+          url: "/api/fav",
+          data: { formData },
+          error: function (response) {
+            alert("목록 추가에 실패하였습니다.");
+          },
+          success: function (response) {
+            alert("목록에 추가하였습니다.");
+          },
+        });
+      }
+    };
     $(".video-grid").append(`
      <div class="video-grid__item">
-      <a  class="video-nav" href="">
+      <a  class="video-nav" href="https://youtu.be/${id}" >
        <div class="video-grid__item-img" style="background-image:url('${
          medium.url
-       }')"></div>
-       <button>⭐️</button>
+       }')"><div class="video-opacity" /></div>
        </a>
+       <button class="fav-btn" id="${idx}"><i class="far fa-heart"></i></button>
        <div class="video-grid__item-info">
          <h2>${title}</h2>
          <div>
@@ -39,9 +61,63 @@ export const addElement = (data, views, start, end) => {
        </div>
      </div>
      `);
+
+    const favBtn = document.getElementById(idx);
+    console.log(favBtn);
+    favBtn.addEventListener("click", handleClick);
   });
 };
+export const addMyContentElement = (data, start, end) => {
+  window.scrollTo(0, 0);
+  $(".video-grid").empty();
+  const newData = data.slice(start, end);
 
+  newData.map((item, idx) => {
+    const { urlId, title, channelTitle, viewCount, url } = item;
+
+    const handleClick = (e) => {
+      const userId = localStorage.getItem("user");
+      if (!userId) alert("로그인이 필요합니다.");
+      if (userId) {
+        const formData = {
+          title,
+          userId,
+        };
+        $.ajax({
+          type: "DELETE",
+          url: "/api/fav",
+          data: { formData },
+          error: function (response) {
+            alert("동영상 삭제에 실패하였습니다.");
+          },
+          success: function (response) {
+            location.reload();
+            alert("동영상을 삭제하였습니다.");
+          },
+        });
+      }
+    };
+
+    $(".video-grid").append(`
+     <div class="video-grid__item">
+      <a  class="video-nav" href="https://youtu.be/${urlId}" >
+       <div class="video-grid__item-img" style="background-image:url('${url}')"><div class="video-opacity" /></div>
+       </a>
+       <button class="fav-btn" id="${idx}"><i class="fas fa-trash-alt"></i></button>
+       <div class="video-grid__item-info">
+         <h2>${title}</h2>
+         <div>
+           <span>${channelTitle}</span>
+           <span>${viewString(viewCount)}</span>
+         </div>
+       </div>
+     </div>
+     `);
+
+    const favBtn = document.getElementById(idx);
+    favBtn.addEventListener("click", handleClick);
+  });
+};
 const viewString = (num) => {
   if (num < 1000) return `조회수 ${num}회`;
   else if (num >= 1000 && num < 10000)

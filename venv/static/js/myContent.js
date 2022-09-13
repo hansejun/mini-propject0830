@@ -1,5 +1,5 @@
-import { getPopular, getPopularViews } from "./api.js";
-import { addElement } from "./util/sendHtml.js";
+import { getMyContent } from "./api.js";
+import { addMyContentElement } from "./util/sendHtml.js";
 import { currentPage } from "./util/currentPage.js";
 import { isLogin } from "./util/isLogIn.js";
 // data를 슬라이스 할 인덱스 값
@@ -18,14 +18,14 @@ let current = 1;
 
 // 현재 url : "http://localhost:6070/sports"에 있을 경우 url의 값은 "/sports"이다.
 const url = window.location.pathname;
+
 // api.js 파일로부터 데이터를 가져오는 함수 / 버튼 생성 (createBtn) / 영상들 보여주기 (addElement) / if~는 url에 "index"가 들어가있다면 빨간줄 긋게 하기
 async function getData() {
-  data = await getPopular(url);
-  views = await getPopularViews(url);
-
+  const id = localStorage.getItem("user");
+  data = await getMyContent(id);
   max = Math.ceil(data.length / 20);
   createBtn(max);
-  addElement(data, views, start, end);
+  addMyContentElement(data, start, end);
   // currentPage(url)은 해당 페이지의 패스가 /라면 home에 빨간 표시, /music인 경우는 music에 빨간 표시를 하는 함수이다.
   currentPage(url);
 }

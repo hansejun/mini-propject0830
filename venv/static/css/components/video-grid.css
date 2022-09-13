@@ -13,13 +13,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
+
 .video-grid__item-img {
   width: 100%;
   height: 180px;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 0px 8px 0px 0px;
 }
 
 .video-grid__item-info {
@@ -49,4 +52,32 @@
 
 .video-nav {
   width: 100%;
+  position: relative;
+}
+
+.fav-btn {
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 7px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  z-index: 2;
+}
+.fav-btn i {
+  font-size: 20px;
+  color: white;
+}
+
+.video-opacity {
+  width: 100%;
+  height: 100%;
+  background-color: none;
+  transition: all 0.2s;
+}
+
+.video-grid__item-img:hover .video-opacity {
+  background-color: rgba(0, 0, 0, 0.4);
 }

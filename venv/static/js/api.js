@@ -37,6 +37,12 @@ export async function getVideo(id) {
   return json.items;
 }
 
+export async function getMyContent(id) {
+  const response = await fetch(`/api/fav/${id}`);
+  const json = await response.json();
+  return json.videos;
+}
+
 /*
   videoCategoryId=10&
 */
